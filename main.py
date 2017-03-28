@@ -11,6 +11,7 @@ from logic import hash_str, get_date, is_safe_url
 
 #initializing flask app and login manager
 app = Flask(__name__)
+app.secret_key = 'kiasu_secret'
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -158,6 +159,5 @@ def createAds(post_id, user_id):
     return "Create Ads for posts"
 
 if __name__ == '__main__':
-  app.secret_key = 'kiasu_secret'
   app.debug = True
   app.run(host = '0.0.0.0')
