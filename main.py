@@ -37,11 +37,10 @@ def logout():
     successmsg = "You have succesfully logged out!"
     flash(render_template('success.html', successmsg=successmsg))
     logout_user()
-    return redirect('/')
+    return redirect(url_for('main'))
 
 #Routes to homepage
 @app.route('/')
-@app.route('/allposts')
 def main():
     posts = session.query(Post).all()
     return render_template('home.html', posts=posts)
@@ -74,9 +73,9 @@ def login():
                         return abort(400)
 
                     if next == '/logout':
-                        return redirect('/')
+                        return redirect(url_for('main'))
 
-                    return redirect('/')
+                    return redirect(url_for('main'))
                 else:
                     return render_template('login.html', alert=render_template('alert.html', errormsg=error))
             else:
@@ -116,7 +115,7 @@ def createUser():
                 successmsg = "Registration Successful! Welcome to Dukahub..."
                 login_user(user)
                 flash(render_template('success.html', successmsg=successmsg))
-                return redirect('/')
+                return redirect(url_for('main'))
         else:
             error = "Please fill in all fields!"
             return render_template('register.html', alert=render_template('alert.html',errormsg=error))
@@ -130,7 +129,7 @@ def userProfile(user_id):
         posts = session.query(Post).filter_by(user=user).all()
         return render_template('user-profile.html', user=user, posts=posts)
     else:
-        return redirect('/')
+        return redirect(url_for('main'))
 
 @app.route('/user/<int:user_id>/edit')
 def editUserProfile(user_id):
