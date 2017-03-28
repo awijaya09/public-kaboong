@@ -29,6 +29,12 @@
  25. Colors
  26. Pages
 
+ /*---------Additional Styles for Kaboong--------*/
+.no-listing {
+    padding:50px 0 50px 0;
+    text-align: center;
+}
+
 /*---------- GLOBAL STYLES ----------*/
 html {
     overflow-y: scroll;
@@ -4482,7 +4488,9 @@ footer p {
 }
 .blog-thumb-desc .excerpt {
     padding-bottom: 24px;
-    border-bottom: 1px solid #eaeaea;
+    line-height: 1.8em;
+    overflow: hidden;
+    max-height: 3.6em;
 }
 .read-more-link {
     font-size: 13px;

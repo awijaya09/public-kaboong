@@ -1,10 +1,19 @@
-from flask import Flask, render_template, request, redirect,jsonify, url_for, flash
-app = Flask(__name__)
+from flask import Flask, render_template, request, redirect,jsonify, url_for, flash, abort
+from flask_login import LoginManager, login_required, login_user, logout_user
 from flask import session as login_session
 import random, string
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, User, Post, Ads, Family, Comment
+
+#securing registration
+from logic import hash_str, get_date, is_safe_url
+
+#initializing flask app and login manager
+app = Flask(__name__)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
 #Connecting engine to local MySQL database named obitsy_db
 engine = create_engine('mysql://obitsy:kiasu123@localhost/obitsy_db')
@@ -12,6 +21,22 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
+@login_manager.user_loader
+def load_user(userid):
+    user_id = int(userid)
+    user = session.query(User).filter_by(id=user_id).first()
+    if user:
+        return user
+    else:
+        return None
+
+@app.route('/logout')
+@login_required
+def logout():
+    successmsg = "You have succesfully logged out!"
+    flash(render_template('success.html', successmsg=successmsg))
+    logout_user()
+    return redirect('/')
 
 #Routes to homepage
 @app.route('/')
@@ -40,7 +65,16 @@ def login():
             error = "Invalid email/password!"
             user = session.query(User).filter_by(email=email).first()
             if user:
-                if user.password == password:
+                hPass = hash_str(password)
+                if user.password == hPass:
+                    login_user(user, remember=True)
+                    next = request.args.get('next')
+                    if not is_safe_url(next):
+                        return abort(400)
+
+                    if next == '/logout':
+                        return redirect('/')
+
                     return redirect('/')
                 else:
                     return render_template('login.html', alert=render_template('alert.html', errormsg=error))
@@ -70,11 +104,16 @@ def createUser():
             if checkUser:
                 error = "Email has been used, please use other email"
                 return render_template('register.html', alert=render_template('alert.html', errormsg=error))
+
+            #Succesfully registering user
             else:
-                user = User(name=name, email=email, password=password)
+                hPass = hash_str(password)
+                todayDate = get_date()
+                user = User(name=name, email=email, password=hPass, member_since=todayDate)
                 session.add(user)
                 session.commit()
                 successmsg = "Registration Successful! Welcome to Dukahub..."
+                login_user(user)
                 flash(render_template('success.html', successmsg=successmsg))
                 return redirect('/')
         else:

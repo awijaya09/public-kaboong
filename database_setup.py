@@ -6,14 +6,27 @@ from sqlalchemy import create_engine
 Base = declarative_base()
 
 class User(Base):
-  __tablename__ = 'user'
+    __tablename__ = 'user'
 
-  id = Column(Integer, primary_key=True)
-  name = Column(String(250), nullable=False)
-  email = Column(String(250), nullable=False)
-  password = Column(String(100), nullable=False)
-  picture = Column(String(250))
-  member_since = Column(String(250), nullable=False)
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
+    email = Column(String(250), nullable=False)
+    password = Column(String(250), nullable=False)
+    picture = Column(String(250))
+    member_since = Column(String(250))
+
+    def is_active(self):
+        return True
+
+    def get_id(self):
+        return unicode(self.id)
+
+    def is_anonymous(self):
+        return False
+
+    def is_authenticated(self):
+        return True
+
 
 class Post(Base):
     __tablename__ = 'post'

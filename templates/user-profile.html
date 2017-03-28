@@ -10,11 +10,17 @@
             <div class="col-md-12">
                 <div class="cart-item">
                     <div class="item-image-container">
-                     <a href="#"><img src="{{user.picture}}" class="img-responsive" alt="{{user.name}}"></a>
+                    {% if user.picture is not none %}
+                        <a href="#"><img src="{{user.picture}}" class="img-responsive" alt="{{user.name}}"></a>
+                    {% else %}
+                        <a href="#"><img src="/static/img/shop/5.jpg" class="img-responsive" alt="{{user.name}}"></a>
+                    {% endif %}
                  </div>
                  <div class="item-details">
                     <h5><strong>{{user.name}}</strong></h5>
-                    <h6>Member since {{user.member_since}}</h6>
+                    {% if user.member_since is not none %}
+                        <h6>Member since {{user.member_since}}</h6>
+                    {% endif %}
                     <a href="#" class="item-action move-to-wishlist"><i class="ion-email"></i> {{user.email}}</a>
                 </div>
             </div>
@@ -28,7 +34,9 @@
             <div class="col-md-12">
                 <h5 class="subheading">Obituary Listing(s)</h5>
             </div>
-            <div class="blog-grid blog-columns cbp" id="blog-grid">
+             {% if posts|length > 0 %}
+                <div class="blog-grid blog-columns cbp" id="blog-grid">
+
                 {% for post in posts %}
                     <div class="cbp-item wander lifestyle">
                         <div class="post-date">
@@ -57,6 +65,17 @@
                         </div>
                     </div>
                 {% endfor %}
+            {% else %}
+                <div class="blog-grid">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6 no-listing">
+                        <h5>You have no listing!</h5>
+                         <a href="#" class="btn btn-lg btn-ghost btn-circle btn-appear"><span>Start listing<i class="ion-plus"></i></span></a>
+                    </div>
+                    <div class="col-md-3"></div>
+
+                </div>
+            {% endif %}
             </div>
         </div>
     </div>

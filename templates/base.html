@@ -39,13 +39,26 @@
                     <li class="nav-separator"></li>
                     <li class="nav-icon"><a class="popup-with-zoom-anim search" href="#search-modal"><i class="flaticon-search"></i> <span class="hidden-md">Search</span></a></li>
                     <li id="search-modal" class="zoom-anim-dialog mfp-hide"><form><input type="text" id="search-modal-input" placeholder=" Start typing to search..." autocomplete="off"></form></li>
-                    <li class="nav-icon dropdown adjust-pos nav-shop-cart">
-                        <a class="dropdown-toggle"><i class="ion-person"></i></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/login">Login</a></li>
-                            <li><a href="/register">Register</a></li>
-                        </ul>
-                    </li>
+
+                    {% if current_user.is_authenticated %}
+                        <li class="dropdown adjust-pos top-menu-custom"><a class="dropdown-toggle">Hi, {{ current_user.name }}<i class="ti-angle-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/user/{{ current_user.id }}">My Profile</a></li>
+                                <li><a href="/logout">Logout</a></li>
+                            </ul>
+                        </li>
+
+                    {% else %}
+                        <li class="nav-icon dropdown adjust-pos nav-shop-cart">
+                            <a class="dropdown-toggle"><i class="ion-person"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/login">Login</a></li>
+                                <li><a href="/register">Register</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+
+
                 </ul>
             </div>
         </div>
