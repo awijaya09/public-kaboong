@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="map-hero">
+    <div class="map-parallax">
+
+        <!-- Google Map -->
+        <div
+        data-map-coordinates="-7.247370, 112.751850"
+        data-marker-coordinates="-7.247370, 112.751850"
+        data-info="Reach out to us for any enquiry!"
+        id="map" class="map-style-1">
+    </div>
+    <!-- End Google Map -->
+
+</div>
+</section>
+
+<section class="pt100 pb90">
+    <div class="container">
+        <div class="row">
+            <div class="contact col-md-9">
+                <div id="message"></div>
+                <!-- Contact Form will be functional only on your server. Upload to your server when testing. -->
+                <form method="post" action="php/contact-form.php" name="contactform" id="contactform">
+                    <fieldset><input name="name" type="text" id="name" placeholder="Your Name*"/></fieldset>
+                    <fieldset><input name="email" type="text" id="email" placeholder="Your Email*"/></fieldset>
+                    <input name="subject" type="text" id="subject" placeholder="Subject"/>
+                    <textarea name="comments" cols="40" rows="3" id="comments" placeholder="Description*"></textarea>
+                    <input type="submit" class="submit btn btn-md btn-primary" id="submit" value="Send Message" />
+                </form>
+            </div>
+
+            <div class="col-md-3 contact-side">
+                <div class="side-info">
+                    <h5>We’d love to talk to you!</h5>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam mattis porttitor turpis, at convallis eros ultricie.</p>
+                </div>
+                <div class="side-info">
+                    <h5>Reach out today!</h5>
+                    <p>
+                        Surabaya
+                        <br>
+                        +628123434488
+                        <br>
+                    </p>
+                </div>
+                <div class="sidebar-share">
+                    <ul class="list-inline">
+                        <li><a href="#"><i class="ti-facebook"></i></a></li>
+
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}
