@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect,jsonify, url_for, flash, abort
 from flask_login import LoginManager, login_required, login_user, logout_user
-from flask import session as login_session
 import random, string
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
