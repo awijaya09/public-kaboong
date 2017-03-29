@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect,jsonify, url_for, flash, abort
-from flask_login import LoginManager, login_required, login_user, logout_user
+from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 import random, string
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
@@ -42,6 +42,7 @@ def logout():
 @app.route('/')
 def main():
     posts = session.query(Post).all()
+    print "Current user is authenticated: %s" % current_user.is_authenticated
     return render_template('home.html', posts=posts)
 
 #Route to About us page
@@ -66,7 +67,9 @@ def login():
             if user:
                 hPass = hash_str(password)
                 if user.password == hPass:
+                    print "User found, password matched: %s" % user.name
                     login_user(user, remember=True)
+                    print "User is logged in, current user: %s" % current_user.is_authenticated
                     next = request.args.get('next')
                     if not is_safe_url(next):
                         return abort(400)
@@ -111,9 +114,11 @@ def createUser():
                 user = User(name=name, email=email, password=hPass, member_since=todayDate)
                 session.add(user)
                 session.commit()
+                print "Registering user: %s" % user.name
                 user_created = session.query(User).filter_by(email=email).one()
                 successmsg = "Registration Successful! Welcome to Kaboong..."
-                login_user(user_created, remember=True):
+                login_user(user_created, remember=True)
+                print "User login is invoked!"
                 flash(render_template('success.html', successmsg=successmsg))
                 return redirect(url_for('main'))
         else:
@@ -126,8 +131,9 @@ def createUser():
 def userProfile(user_id):
     user = session.query(User).filter_by(id=user_id).first()
     if user:
-        posts = session.query(Post).filter_by(user=user).all()
-        return render_template('user-profile.html', user=user, posts=posts)
+        if current_user.id == user.id:
+            posts = session.query(Post).filter_by(user=user).all()
+            return render_template('user-profile.html', user=user, posts=posts)
     else:
         return redirect(url_for('main'))
 
