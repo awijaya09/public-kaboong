@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+
 <section class="page-title parallax bg-img-1">
     <div class="page-title-content">
         <div class="container">
@@ -43,4 +45,15 @@
         </div>
     </div>
 </section>
+<button>
+    <fb:login-button scope="public_profile,email,name" onlogin="sendTokenToServer();">
+        <a href="javascript:sendTokenToServer()">Login With Facebook</a>
+    </fb:login-button>
+</button>
+
+<div id="result"></div>
+
+
+<script type="text/javascript" src="/static/js/fbconnect.js"></script>
+
 {% endblock %}
