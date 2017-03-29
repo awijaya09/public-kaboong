@@ -2,10 +2,11 @@ from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
+from flask_login import UserMixin
 
 Base = declarative_base()
 
-class User(Base):
+class User(Base, UserMixin):
     __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
@@ -14,22 +15,6 @@ class User(Base):
     password = Column(String(250), nullable=False)
     picture = Column(String(250))
     member_since = Column(String(250))
-
-    @property
-    def is_active(self):
-        return True
-
-    def get_id(self):
-        return unicode(self.id)
-
-    @property
-    def is_anonymous(self):
-        return False
-
-    @property
-    def is_authenticated(self):
-        return True
-
 
 class Post(Base):
     __tablename__ = 'post'
