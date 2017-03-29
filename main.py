@@ -113,7 +113,7 @@ def createUser():
                 user = User(name=name, email=email, password=hPass, member_since=todayDate)
                 session.add(user)
                 session.commit()
-		user_created = session.query(User).filter_by(email=email).one()
+                user_created = session.query(User).filter_by(email=email).one()
                 successmsg = "Registration Successful! Welcome to Kaboong..."
                 if login_user(user_created):
                 	flash(render_template('success.html', successmsg=successmsg))
