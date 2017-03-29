@@ -67,7 +67,6 @@ def login():
             if user:
                 hPass = hash_str(password)
                 if user.password == hPass:
-		    login_session.clear()
                     login_user(user, remember=True)
                     next = request.args.get('next')
                     if not is_safe_url(next):
