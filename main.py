@@ -164,5 +164,5 @@ def createAds(post_id, user_id):
     return "Create Ads for posts"
 
 if __name__ == '__main__':
-  app.debug = False
+  app.debug = True
   app.run(host = '0.0.0.0')

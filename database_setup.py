@@ -15,15 +15,18 @@ class User(Base):
     picture = Column(String(250))
     member_since = Column(String(250))
 
+    @property
     def is_active(self):
         return True
 
     def get_id(self):
         return unicode(self.id)
 
+    @property
     def is_anonymous(self):
         return False
 
+    @property
     def is_authenticated(self):
         return True
 
