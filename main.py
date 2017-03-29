@@ -115,9 +115,9 @@ def createUser():
                 session.commit()
                 user_created = session.query(User).filter_by(email=email).one()
                 successmsg = "Registration Successful! Welcome to Kaboong..."
-                if login_user(user_created):
-                	flash(render_template('success.html', successmsg=successmsg))
-                	return redirect(url_for('main'))
+                login_user(user_created, remember=True):
+                flash(render_template('success.html', successmsg=successmsg))
+                return redirect(url_for('main'))
         else:
             error = "Please fill in all fields!"
             return render_template('register.html', alert=render_template('alert.html',errormsg=error))
